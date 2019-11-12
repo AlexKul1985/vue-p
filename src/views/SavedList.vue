@@ -26,7 +26,7 @@
         </v-list-item-action>
         <v-list-item-action>
           <v-btn icon>
-            <v-icon>{{iconAdd}}</v-icon>
+            <v-icon>{{iconDel}}</v-icon>
           </v-btn>
       </v-list-item-action>
       </v-list-item>
@@ -38,11 +38,11 @@
 
 <script>
 import { mdiCryengine  } from '@mdi/js';
-import { mdiPlusCircle } from '@mdi/js';
+import { mdiBasketFill } from '@mdi/js';
   export default {
     data: () => ({
       iconWatch:mdiCryengine,
-      iconAdd:mdiPlusCircle,
+      iconDel:mdiBasketFill,
       items: [
         {  title: 'JQuery', subtitle: 'Version 1.4.5' },
         {  title: 'JQuery', subtitle: 'Version 4.5.6' },

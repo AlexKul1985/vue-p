@@ -1,20 +1,24 @@
 import VueRouter from 'vue-router'
-import Vue from 'vue'
-import HelloWorld from '../components/HelloWorld.vue'
-import Added from '../components/Added.vue'
+import Vue from 'vue';
+import SearchList from '../views/SearchList.vue'
+import SavedList from '../views/SavedList.vue'
+
 
 Vue.use(VueRouter)
 
 export const router = new VueRouter({
     routes:[
         {
-            component:HelloWorld,
-            path:'/'
+            component:SearchList,
+            path:"/",
+            
         },
         {
-            component:Added,
-            path:'/added'
-        },
+            component:SavedList,
+            path:"/saved",
+            
+        }
+        
     ],
     mode:'history'
 })
