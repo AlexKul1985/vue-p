@@ -2,21 +2,32 @@ import Vue from 'vue'
 import Vuex from 'vuex'
 import {saved} from './modules/saved.js'
 import {search} from './modules/search.js'
+import {detail} from './modules/detail.js'
 Vue.use(Vuex)
 
 export default new Vuex.Store({
   state: {
     loading:false,
-    textEmptyData:'',
-    flagLoaded:false
+   
+    flagLoaded:false,
+    infoText:'',
+    infoShow:false,
+    color:null
   },
   getters:{
-    
-    textEmptyData(state){
-      return state.flagLoad ? 'Unknown Data' : 'Not Data'
+  
+    infoShow(state){
+      return state.infoShow 
     },
+    infoText(state){
+      return state.infoText 
+    },
+   
     loading(state){
       return state.loading
+    },
+    color(state){
+      return state.color
     }
   },
 
@@ -24,18 +35,37 @@ export default new Vuex.Store({
     setLoading(state,payload){
       state.loading = payload
     },
-    setFlagLoaded(state,payload){
-      state.flagLoaded = payload;
+   
+    setInfoShow(state,payload){
+      state.infoShow = payload
+    },
+    setInfoText(state,payload){
+      state.infoText = payload
+    },
+    setColor(state,payload){
+      state.color = payload
     }
   
   },
   actions: {
     setLoading({commit},payload){
       commit('setLoading',payload)
+    },
+    setError({commit},{error, textError=""}){
+      commit('setColor','red')
+      commit('setInfoShow',error)
+      commit('setInfoText',textError)
+    },
+    setInfo({commit},{infoShow,infoText=""}){
+      commit('setColor','green')
+      commit('setInfoShow',infoShow)
+      commit('setInfoText',infoText)
     }
+    
+    
    
   },
   modules: {
-    saved,search
+    saved,search,detail
   }
 })

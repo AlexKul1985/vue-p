@@ -1,12 +1,12 @@
 
 <template>
   <v-card
-    max-width="600"
+    max-width="1200"
     class="mx-auto"
   >
     <v-list two-line subheader>
      
-        <Item v-for="(item,index) in items" :item="item" :key="index" :fields = "fields" :type="type"/>
+        <Item v-for="(name,index) in names" :item="name" :key="index" :subItem = "items[name]['latest_version']" :index="index"  :type="type" :mounted="mounted" @mounted="onMountedOneItem"/>
     </v-list>
   </v-card>
 </template>
@@ -23,13 +23,23 @@ export default {
     components:{
         Item
     },
+    data(){
+        return {
+            mounted:false
+        }
+    },
     provide:{
-        add:function(val){
+        add: async function(val,index){
             
-            ctx.$emit('add',val)
+            let res = await ctx.method(val);
             
+            return res;
+            
+
+           
         },
-        del:function(val){
+        del:function(val,index){
+           
            
              ctx.$emit('del',val)
             
@@ -39,20 +49,46 @@ export default {
             
             ctx.$emit('watch',val)
             
-
+        },
+        getArraySelect:function(name){
+            
+            return ctx.items[name]['version']
         }
+
     },
-    props:['items','type'],
-   
+    
+    props:{
+        items:{
+            type:Object,
+           default:() => {
+                return {};
+            }
+        },
+        type:{
+            type:String
+        },
+        method:{
+            type:Function
+        }
+
+    },
+  
     computed:{
-        fields(){
-            return this.items.length > 0 && Object.keys(this.items[0])
+      
+        names(){
+            return Object.keys(this.items)
         }
     },
     created(){
         ctx = this;
-    }
-    
+    },
+ 
+    methods:{
+        onMountedOneItem(v){
+            this.mounted = v;
+        }
+    },
+   
   }
 </script>
      

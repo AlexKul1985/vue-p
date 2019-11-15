@@ -1,5 +1,5 @@
-<template>
  
+<template>
     <v-app-bar
       :clipped-left="$vuetify.breakpoint.lgAndUp"
       app
@@ -8,6 +8,7 @@
     >
        <slot></slot>
     </v-app-bar>
+</template>
     
   
        
@@ -15,4 +16,3 @@
   
         
     
-</template>
