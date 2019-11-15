@@ -2,9 +2,11 @@ import Vue from 'vue'
 import VueRouter from 'vue-router'
 import SearchList from '../views/SearchList.vue'
 import SavedList from '../views/SavedList.vue'
-import DetailLib from '../views/DetailLib.vue'
 import E404 from '../views/NotFound'
+import DetailLib from '../views/DetailLib.vue'
 import store from '../store/index'
+
+
 
 Vue.use(VueRouter)
 
@@ -46,6 +48,30 @@ export const router = new VueRouter({
                 
                
             }
+            
+        },
+        {
+            component:DetailLib,
+            path:"/detail/:name",
+            name:'detail',
+            beforeEnter(to, from, next){
+                if(from.name == 'saved'){
+                    store.dispatch('setLoading',true)
+                    store.dispatch('saved/getDetailLib',to.params.name).then(() => {
+                      store.dispatch('setLoading',false)
+                    })
+                }
+                else {
+                    store.dispatch('setLoading',true)
+                    store.dispatch('detail/getDetailLib',to.params.name).then(() => {
+                      store.dispatch('setLoading',false)
+                    })
+                }
+              
+               
+                next()
+            }
+
             
         },
         {
