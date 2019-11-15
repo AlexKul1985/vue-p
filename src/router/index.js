@@ -48,33 +48,10 @@ export const router = new VueRouter({
                 
                
             }
-            
         },
-        {
-            component:DetailLib,
-            path:"/detail/:name",
-            name:'detail',
-            beforeEnter(to, from, next){
-                if(from.name == 'saved'){
-                    store.dispatch('setLoading',true)
-                    store.dispatch('saved/getDetailLib',to.params.name).then(() => {
-                      store.dispatch('setLoading',false)
-                    })
-                }
-                else {
-                    store.dispatch('setLoading',true)
-                    store.dispatch('detail/getDetailLib',to.params.name).then(() => {
-                      store.dispatch('setLoading',false)
-                    })
-                }
-              
-               
-                next()
-            }
 
-            
-        },
         {
+            
             component:DetailLib,
             path:"/detail/:name",
             name:'detail',
@@ -95,8 +72,8 @@ export const router = new VueRouter({
                
                 next()
             }
-            
         },
+    
         {
             path: '*',
             component: E404
