@@ -1,42 +1,58 @@
 export const search = {
     namespaced: true,
     state:{
-        versions:[],
-        nameLib:[],
+      
+        libs:{},
        
     },
     getters:{
-        versions(state){
-            return state.versions
-        },
-        nameLib(state){
-            return state.nameLib
+       
+        libs(state){
+            return state.libs
         }
 
     },
     mutations:{
-        setVersions(state,payload){
-            // console.log('payload',payload)
-                state.versions = payload;
-            },
-        setNameLib(state,payload){
-            state.nameLib.push(payload)
+      
+        setLibs(state,payload){
+            state.libs = payload
            
         }
     },
    
     actions:{
-        // setVersions({commit},payload){
-        //     commit('setVersions',payload)
-        // },
-        async setNameLib({commit},payload){
-            let res = await fetch(`https://api.cdnjs.com/libraries/${payload}/?fields=name,assets`)
-            let data = await res.json()
-            let versions = Object.keys(data).length > 0 && !commit('setNameLib',data.name) ?
-             data.assets.map((obj) => {
-                return obj.version;
-             }): [];
-             commit('setVersions',versions)
+        
+        async setLibs({commit},payload){
+           
+            let res_names = await fetch(`https://api.cdnjs.com/libraries/?search=${payload}`)
+            let data_names = await res_names.json()
+          
+            
+            let names = data_names.results.map((obj) => {
+                return obj.name;
+            })
+           
+            let libs = {};
+           await names.forEach(async (name,ind) => {
+                
+                let res_versions = await fetch(`https://api.cdnjs.com/libraries/${name}/?fields=assets`)
+                let data_versions = await res_versions.json()
+                libs[name] = {};
+                let latest_version = null;
+                libs[name]['version'] = data_versions.assets.map((asset,ind) => {
+                    if(ind == 0) latest_version = asset.version.trim()
+                    return asset.version
+                })
+                libs[name]['latest_version'] = latest_version
+                if(ind == names.length - 1){
+
+                   
+                    commit('setLibs',libs)
+                }
+            });
+            return true;
+           
+             
         }
            
 

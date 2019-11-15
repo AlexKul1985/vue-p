@@ -3,28 +3,34 @@
   <Container>
       <HeaderTop>
             <Title>
-              Libraries
+               <router-link to="/"><span class="title"> JS Libraries</span></router-link>
             </Title>
+              
             <TextField
+            v-if="name == 'search'"
               @input = "onInput"
             />
             <v-spacer />
-                  
-            <Select
-              :versions="versions"
-              @change="onChange"
-            />
-         
+           
+            <router-link to="/saved">
+               <v-btn class="ma-2" outlined fab color="white">
+                <v-icon>mdi-format-list-bulleted-square</v-icon>
+              </v-btn>
+            </router-link>
       </HeaderTop>
-
       <Content>
          <Loading
            :loading="loading"
           />
           <router-view/>
       </Content>
+      <SnackBar :text="text" :snackbar="flag" :color="color"/>
   </Container>
 </template>
+                  
+            
+         
+
 
 
    
@@ -45,48 +51,79 @@ import Container from './components/Container'
 import HeaderTop from './components/HeaderTop'
 import Content from './components/Content'
 import TextField from './components/TextField'
-import Select from './components/Select'
+import SnackBar from './components/SnackBar'
+
 import Title from './components/Title'
 import Loading from './components/Loading'
 
+let ctx = null;
+let idTimer = null;
 
   export default {
     name:'App',
     components:{
-      TextField,Select,Title,HeaderTop,Container,Content,Loading
+      TextField,Title,HeaderTop,Container,Content,Loading,SnackBar
+    },
+    data(){
+      return {
+        name:'search',
+        
+      }
     },
     methods:{
-      onChange(v){
-        console.log(v)
-      },
-       onInput(v){
-        // console.log(v)
-        // let payload
-        // if(v.length > 0){
-        //   payload = [1,2,3,4,5,6,7,8,9];
-        //    console.log(1)
-        // }
-           
-        // else{
-        //   console.log(2)
-        //   payload = []
-        // }   
-        this.$store.dispatch('search/setNameLib',v.toLowerCase())
+     
+       onInput(v=""){
+         if(idTimer) 
+          
+           clearTimeout(idTimer)
+         
+         
+           idTimer = setTimeout(() => {
+
+
+               !(!!v && this.$store.dispatch('setLoading',true) && !this.$store.dispatch('search/setLibs',v.toLowerCase())) && this.$store.commit('search/setLibs',{})
+             
+           },1000)
+         
+       
+            
+         
       }
     },
     computed:{
-       versions(){
-        return this.$store.getters['search/versions']
-      },
+      
       loading(){
         return this.$store.getters.loading
+      },
+      flag(){
+        return this.$store.getters.infoShow
+      },
+      text(){
+        return this.$store.getters.infoText
+      },
+      color(){
+        return this.$store.getters.color
+      }
+
+    },
+    watch:{
+      $route:(to,from) => {
+       ctx.name = to.name
       }
     },
+     created(){
+        ctx = this;
+      }
     
    
   
     
   }
 </script>
+<style lang="scss">
+  .title{
+    color:#fff;
+  }
+</style>
 
 

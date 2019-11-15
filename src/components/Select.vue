@@ -2,12 +2,13 @@
     
         <v-select
           :items="versions"
-          label="Version"
-           flat
-        solo-inverted
-        hide-details
+          label="versions"
+          flat
+          
+          hide-details
+          
         
-        @change="$emit('change',$event)"
+          @change="$emit('change',$event)"
           
         ></v-select>
     
@@ -15,6 +16,7 @@
 <script>
 export default {
     props:['versions'],
+    
    
 }
 </script>

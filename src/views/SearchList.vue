@@ -1,45 +1,56 @@
 <template>
+  <div v-if="Object.keys(libs).length">
   <v-card
-    max-width="600"
+    max-width="980"
     class="mx-auto"
   >
-  <List
-      :items="items"
-      :type="'add'"
-      @add = "onAdd"
+    <List
+      :items="libs"
+      :type="'search'"
+      :method = "save"
       @watch = "onWatch"
+      :arrayValues="[]"
     />
 
   </v-card>
+  </div>
+  <div v-else></div>
+
 </template>
 <script>
 
 
 import List from '../components/List'
+import {addLibMixin} from '../mixins/addLib.js'
 
 export default {
   components:{
     List
   },
-  data: () => ({
-    
-    items: [
-      {  title: 'JQuery', subtitle: 'Version 1.4.5' },
-      {  title: 'JQuery', subtitle: 'Version 4.5.6' },
-      { title: 'JQuery', subtitle: 'Version 7.6.5' },
-    ],
-    
-  }),
-  
+    mixins:[addLibMixin],
+ 
     methods:{
-      onAdd(item){
-        console.log('onAdd ',item)
-
+      async save(item){
+        
+        let res = await this.onAdd(item)
+        
+      
+        return res;
       },
       onWatch(item){
-        console.log('onWatch ',item)
+       
+       
+        this.$router.push(`/detail/${item}`)
       }
 
-    }
+    },
+    computed:{
+    
+      libs(){
+        return this.$store.getters['search/libs']
+      }
+    },
+   
+   
   }
 </script>
