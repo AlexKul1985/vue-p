@@ -35,6 +35,29 @@
         </v-btn>
     
   </v-card>
+  <v-row justify="center">
+    <v-btn class="watch_version_btn"
+      color="primary"
+      dark
+      @click.stop="onClick"
+    >
+      View all versions
+    </v-btn>
+
+    <v-dialog
+      v-model="dialog"
+      max-width="290"
+    >
+      <v-card>
+        <v-list-item v-for="version in versions" :key="version"> 
+          <v-list-item-content>
+            <v-list-item-title>{{version}}</v-list-item-title>
+          </v-list-item-content>
+        </v-list-item>
+       
+      </v-card>
+    </v-dialog>
+  </v-row>
     </div>
 </template>
 <script>
@@ -46,6 +69,8 @@ export default {
     mixins:[addLibMixin, sendInfoMixin],
     data(){
         return {
+            name_natural:'',
+            dialog: false,
             routeName:'search',
             iconDel:mdiBasketFill,
             iconSave: mdiShapeCirclePlus
@@ -55,8 +80,12 @@ export default {
         detailLib(){
             return this.$store.getters['detail/detailLib']
         },
+        versions(){
+          return this.$store.getters['detail/versions']
+        }
        
     },
+   
     beforeRouteEnter (to, from, next) {
    
    	next(vm => {
@@ -65,6 +94,19 @@ export default {
   },
     
     methods:{
+         onClick(){
+          this.$store.dispatch('setLoading',true)
+           this.$store.dispatch('detail/getVersions',this.$route.params.name).then((d) => {
+             this.$store.dispatch('setLoading',false)
+             
+             if(d){
+               this.dialog=true
+             }
+             else{
+                this.sendInfoFunction('setError','Unknown error!')
+             }
+           })
+         },
          save(item){
               
            this.onAdd(item).then((flag) => {
@@ -115,5 +157,8 @@ export default {
             top:-8%;
             right:-1%;
         }
+    }
+    .watch_version_btn{
+      margin-top:20px;
     }
 </style>

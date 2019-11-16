@@ -29,13 +29,13 @@
            <v-icon>{{icon}}</v-icon>
           </v-btn>
         </v-list-item-action>
-         <v-list-item-action v-if = "type == 'search'">
+         <!-- <v-list-item-action v-if = "type == 'search'">
              <Select
             :versions="values"
              
              validate-on-blur
              />
-        </v-list-item-action>
+        </v-list-item-action> -->
         
     </v-list-item>
 </v-lazy>
@@ -53,7 +53,7 @@ import  Select from './Select.vue'
         
 export default {
     components:{Select},
-    inject:['add','del','watch','getArraySelect'],
+    inject:['add','del','watch'],
     data(){
         return{
             wasCalledFlag:false,
@@ -97,9 +97,9 @@ export default {
             return this.type == 'search' ? this.iconAdd : this.iconDel
         },
     
-       values(){
-           return this.getArraySelect(this.item);
-       },
+    //    values(){
+    //        return this.getArraySelect(this.item);
+    //    },
        addedOk(){
            return this.added
        }

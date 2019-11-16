@@ -33,6 +33,7 @@ export const saved = {
            
             data.homepage = !!data.homepage ? data.homepage : data.repository.url.replace(/^(git\:|git\+https\:)/,'https:')
             data['name'] = payload.toUpperCase();
+           
             data['latest_version'] = data.version;
             commit('save',data)
             
@@ -41,6 +42,7 @@ export const saved = {
             if(localStorage.getItem('libs')){
               
                 let libs = JSON.parse(localStorage.getItem('libs'))
+                
     
                 commit('detail/getDetailLib',libs[payload],{root:true});
                 return true;

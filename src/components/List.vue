@@ -50,10 +50,10 @@ export default {
             ctx.$emit('watch',val)
             
         },
-        getArraySelect:function(name){
+        // getArraySelect:function(name){
             
-            return ctx.items[name]['version']
-        }
+        //     return ctx.items[name]['version']
+        // }
 
     },
     
