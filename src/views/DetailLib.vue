@@ -41,8 +41,9 @@
 import { mdiShapeCirclePlus } from '@mdi/js';
 import { mdiBasketFill } from '@mdi/js';
 import {addLibMixin} from '../mixins/addLib.js'
+import { sendInfoMixin } from './../mixins/sendInfoUser';
 export default {
-    mixins:[addLibMixin],
+    mixins:[addLibMixin, sendInfoMixin],
     data(){
         return {
             routeName:'search',
@@ -68,16 +69,8 @@ export default {
               
            this.onAdd(item).then((flag) => {
                if(flag){
-                    this.$store.dispatch('setInfo',{
-                    infoShow: true,
-                     infoText: 'Library added!'
-                   })
-                   setTimeout(() => {
-                        this.$store.dispatch('setInfo',{
-                            infoShow: false,
-                           
-                   })
-                   },3000)
+                 
+                  this.sendInfoFunction('setInfo','Library added!')
                   
                }
            })
@@ -92,30 +85,15 @@ export default {
               if(!Object.keys(libs).length){
                
                 this.$router.push("/");
-                this.$store.dispatch('setInfo',{
-                  infoShow:true,
-                  infoText:'You have deleted all library data'
-                })
-                setTimeout(() => {
-                  this.$store.dispatch('setInfo',{
-                  showInfo:false,
-                  
-                })
-                },3000)
+               
+                this.sendInfoFunction('setInfo','You have deleted all library data')
               }
               else{
 
                   this.$router.push('/saved')
-                   this.$store.dispatch('setInfo',{
-                  infoShow:true,
-                  infoText:'You have successfully deleted the library'
-                })
-                setTimeout(() => {
-                  this.$store.dispatch('setInfo',{
-                  showInfo:false,
-                  
-                })
-                },3000)
+               
+                 this.sendInfoFunction('setInfo','You have successfully deleted the library')
+
               }
               localStorage.setItem('libs',JSON.stringify(libs))
               this.$store.dispatch('saved/getSavedLibs',libs)

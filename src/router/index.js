@@ -5,6 +5,9 @@ import SavedList from '../views/SavedList.vue'
 import E404 from '../views/NotFound'
 import DetailLib from '../views/DetailLib.vue'
 import store from '../store/index'
+import { sendInfoFunction } from './../mixins/sendInfoUser';
+
+
 
 
 
@@ -16,14 +19,6 @@ export const router = new VueRouter({
             component:SearchList,
             path:"/",
             name:'search',
-            // beforeEnter(to, from, next){
-            //     store.dispatch('setLoading',true)
-            //     console.log(store.getters.currentName)
-            //     store.dispatch('search/setLibs',store.getters.currentName);
-            //     next()
-                
-                
-            // },
            
             
         },
@@ -35,18 +30,9 @@ export const router = new VueRouter({
                 store.dispatch('saved/getSavedLibs').then((res) => {
                     
                     if(!res){
-                        store.dispatch('setError',{
-                            error:true,
-                            textError: `You have no saved libraries! 
-                                          Add at least one library!`
-                        })
-                        setTimeout(() => {
-                            store.dispatch('setError',{
-                                error:false,
-                                
-                            })
-                        },3000)
                        
+                        sendInfoFunction('setError',`You have no saved libraries! 
+                                                        Add at least one library!`,store)
                         
                     }
                     else{

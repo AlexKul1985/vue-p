@@ -12,6 +12,9 @@ export const detail = {
     mutations:{
         getDetailLib(store,payload){
             store.detailLib = payload;
+        },
+        getVersions(){
+            
         }
     },
    

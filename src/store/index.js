@@ -57,15 +57,15 @@ export default new Vuex.Store({
     setLoading({commit},payload){
       commit('setLoading',payload)
     },
-    setError({commit},{error, textError=""}){
+    setError({commit},{flag, text=""}){
       commit('setColor','red')
-      commit('setInfoShow',error)
-      commit('setInfoText',textError)
+      commit('setInfoShow',flag)
+      commit('setInfoText',text)
     },
-    setInfo({commit},{infoShow,infoText=""}){
+    setInfo({commit},{flag, text=""}){
       commit('setColor','green')
-      commit('setInfoShow',infoShow)
-      commit('setInfoText',infoText)
+      commit('setInfoShow',flag)
+      commit('setInfoText',text)
     },
     setCurrentName({commit},payload){
       // debugger

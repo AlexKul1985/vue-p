@@ -21,11 +21,12 @@
 <script>
 
 import List from '../components/List'
+import { sendInfoMixin } from './../mixins/sendInfoUser';
   export default {
     components:{
       List
     },
-    
+    mixins:[sendInfoMixin],
     methods:{
       onDel(item){
        
@@ -38,28 +39,12 @@ import List from '../components/List'
               if(!Object.keys(libs).length){
                
                 this.$router.push("/");
-                this.$store.dispatch('setInfo',{
-                  infoShow:true,
-                  infoText:'You have deleted all library data'
-                })
-                setTimeout(() => {
-                  this.$store.dispatch('setInfo',{
-                  showInfo:false,
-                  
-                })
-                },3000)
+                
+                this.sendInfoFunction('setInfo','You have deleted all library data')
               }
               else{
-                this.$store.dispatch('setInfo',{
-                  infoShow:true,
-                  infoText:'You have successfully deleted the library'
-                })
-                setTimeout(() => {
-                  this.$store.dispatch('setInfo',{
-                  showInfo:false,
-                  
-                })
-                },3000)
+                
+                 this.sendInfoFunction('setInfo','You have successfully deleted the library')
               }
               localStorage.setItem('libs',JSON.stringify(libs))
               this.$store.dispatch('saved/getSavedLibs',libs)

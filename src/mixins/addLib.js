@@ -1,4 +1,7 @@
+
+import { sendInfoMixin } from './../mixins/sendInfoUser';
 export const addLibMixin = {
+    mixins:[sendInfoMixin],
     methods:{
         async onAdd(item){
            
@@ -14,15 +17,8 @@ export const addLibMixin = {
                 
                 if(!this.noDuplicateData(Object.keys(libs),item)){
   
-                    this.$store.dispatch('setError',{
-                        error: true,
-                        textError: 'Library already exists'
-                    })
-                    setTimeout(() => {
-                        this.$store.dispatch('setError',{
-                            error: false
-                        })
-                    },3000)
+                   
+                    this.sendInfoFunction('setError','Library already exists')
                     
                     return false
                 }

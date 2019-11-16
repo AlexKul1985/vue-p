@@ -56,6 +56,7 @@ import SnackBar from './components/SnackBar'
 
 import Title from './components/Title'
 import Loading from './components/Loading'
+import {sendInfoMixin} from './mixins/sendInfoUser'
 
 let ctx = null;
 let idTimer = null;
@@ -66,6 +67,7 @@ let idTimedOut = null;
     components:{
       TextField,Title,HeaderTop,Container,Content,Loading,SnackBar
     },
+    mixins:[sendInfoMixin],
     data(){
       return {
         name:'search',
@@ -97,33 +99,18 @@ let idTimedOut = null;
                       clearTimeout(idTimedOut)
                       return;  
                     }                     
-                    this.$store.dispatch('setError',{
-                                                    error: true,
-                                                    textError: 'Timed out, try to enter data differently'
-                                                  })
+                      this.sendInfoFunction('setError','Timed out, try to enter data differently')
                       this.$store.dispatch('setLoading',false)
-                      setTimeout(() => {
-                          this.$store.dispatch('setError',{
-                          error: false,
-                        
-                        })
-                        },3000)    
+                     
                    },7000)
                 }
                 else{
-                  console.log('asdsad')
+                  
                    this.$store.dispatch('setLoading',false)
-                       this.$store.dispatch('setError',{
-                                                    error: true,
-                                                    textError: 'Input format error'
-                                                  })
-                        setTimeout(() => {
-                          this.$store.dispatch('setError',{
-                          error: false,
-                        
-                        })
-                        },3000)
-                        }
+                   this.sendInfoFunction('setError','Input format error')
+                     
+                }
+
                 
                }
                else{
