@@ -6,7 +6,7 @@
   >
     <v-list two-line subheader>
      
-        <Item v-for="(name,index) in names" :item="name" :key="index" :subItem = "items[name]['latest_version']" :index="index"  :type="type" :mounted="mounted" @mounted="onMountedOneItem"/>
+        <Item v-for="(name,index) in names" :item="name" :key="index" :subItem = "items[name]['latest_version']" :index="index" :added="items[name].added" :type="type" :mounted="mounted" @mounted="onMountedOneItem"/>
     </v-list>
   </v-card>
 </template>

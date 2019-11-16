@@ -15,7 +15,7 @@
           <v-list-item-subtitle >Latest version: {{subItem}}</v-list-item-subtitle>
         </v-list-item-content>
         <v-list-item-content>
-           <v-icon v-if ="flagActiveOk || wasCalledFlag"  class="ok_add" color="green">{{iconOk}}</v-icon>
+           <v-icon v-if ="addedOk || flagActiveOk || wasCalledFlag"  class="ok_add" color="green">{{iconOk}}</v-icon>
            
         </v-list-item-content>
             
@@ -85,10 +85,13 @@ export default {
         mounted:{
             type:Boolean,
             default: true
-        }
+        },
+        added: Boolean
         
         
     },
+    
+   
     computed:{
         icon(){
             return this.type == 'search' ? this.iconAdd : this.iconDel
@@ -96,6 +99,9 @@ export default {
     
        values(){
            return this.getArraySelect(this.item);
+       },
+       addedOk(){
+           return this.added
        }
     },
    

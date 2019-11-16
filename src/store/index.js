@@ -8,8 +8,8 @@ Vue.use(Vuex)
 export default new Vuex.Store({
   state: {
     loading:false,
-   
-    flagLoaded:false,
+    currentName:null,
+    // flagLoaded:false,
     infoText:'',
     infoShow:false,
     color:null
@@ -28,6 +28,9 @@ export default new Vuex.Store({
     },
     color(state){
       return state.color
+    },
+    currentName(state){
+      return state.currentName
     }
   },
 
@@ -44,6 +47,9 @@ export default new Vuex.Store({
     },
     setColor(state,payload){
       state.color = payload
+    },
+    setCurrentName(state,payload){
+      state.currentName = payload
     }
   
   },
@@ -60,6 +66,10 @@ export default new Vuex.Store({
       commit('setColor','green')
       commit('setInfoShow',infoShow)
       commit('setInfoText',infoText)
+    },
+    setCurrentName({commit},payload){
+      // debugger
+      commit('setCurrentName',payload)
     }
     
     

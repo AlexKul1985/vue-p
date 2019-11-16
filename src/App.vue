@@ -9,6 +9,7 @@
             <TextField
             v-if="name == 'search'"
               @input = "onInput"
+              :value="currentTextName"
             />
             <v-spacer />
            
@@ -67,12 +68,14 @@ let idTimer = null;
     data(){
       return {
         name:'search',
+        currentTextName:''
         
       }
     },
     methods:{
      
        onInput(v=""){
+         this.currentTextName = v;
          if(idTimer) 
           
            clearTimeout(idTimer)
@@ -103,17 +106,29 @@ let idTimer = null;
       },
       color(){
         return this.$store.getters.color
-      }
+      },
+      
 
     },
     watch:{
       $route:(to,from) => {
        ctx.name = to.name
-      }
+       if(from.name == 'search')
+          console.log(from.name);
+          if(ctx.currentTextName){
+            ctx.$store.dispatch('setCurrentName',ctx.currentTextName)
+          }
+          
+      },
+     
+
     },
+  
      created(){
-        ctx = this;
-      }
+       ctx = this;
+    }
+
+
     
    
   

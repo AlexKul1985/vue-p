@@ -1,3 +1,18 @@
+function isLibraryAdd(localDB,dataServer){
+    let libs = JSON.parse(localDB)
+    
+    if(localDB && Object.keys(libs).length){
+        for(let key in dataServer){
+            if(key in libs){
+                dataServer[key]['added'] = true;
+            }
+            else{
+                dataServer[key]['added'] = false;
+            }
+        }
+    }
+}
+
 export const search = {
     namespaced: true,
     state:{
@@ -23,7 +38,8 @@ export const search = {
     actions:{
         
         async setLibs({commit},payload){
-           
+           commit('setLibs',{});
+        // debugger;
             let res_names = await fetch(`https://api.cdnjs.com/libraries/?search=${payload}`)
             let data_names = await res_names.json()
           
@@ -45,8 +61,8 @@ export const search = {
                 })
                 libs[name]['latest_version'] = latest_version
                 if(ind == names.length - 1){
-
-                   
+                    isLibraryAdd(localStorage.getItem('libs'),libs)
+                    console.log(libs)
                     commit('setLibs',libs)
                 }
             });

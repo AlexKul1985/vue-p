@@ -15,7 +15,16 @@ export const router = new VueRouter({
         {
             component:SearchList,
             path:"/",
-            name:'search'
+            name:'search',
+            // beforeEnter(to, from, next){
+            //     store.dispatch('setLoading',true)
+            //     console.log(store.getters.currentName)
+            //     store.dispatch('search/setLibs',store.getters.currentName);
+            //     next()
+                
+                
+            // },
+           
             
         },
         {

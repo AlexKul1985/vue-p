@@ -50,6 +50,17 @@ export default {
         return this.$store.getters['search/libs']
       }
     },
+    beforeRouteEnter(from,to,next){
+      next((vm) => {
+        if(vm.$store.getters.currentName){
+
+          vm.$store.dispatch('search/setLibs',vm.$store.getters.currentName);
+        }
+     
+      })
+      
+    },
+    
    
    
   }
