@@ -59,6 +59,7 @@ import Loading from './components/Loading'
 
 let ctx = null;
 let idTimer = null;
+let idTimedOut = null;
 
   export default {
     name:'App',
@@ -83,8 +84,51 @@ let idTimer = null;
          
            idTimer = setTimeout(() => {
 
-
-               !(!!v && this.$store.dispatch('setLoading',true) && !this.$store.dispatch('search/setLibs',v.toLowerCase())) && this.$store.commit('search/setLibs',{})
+               if(!!v){
+                 if(/^[a-zA-Z0-9\-\_\.]+/.test(ctx.currentTextName)){
+                    this.$store.dispatch('setLoading',true)
+                    this.$store.dispatch('search/setLibs',v.toLowerCase())
+                    this.$store.dispatch('search/setFlagTimed',false)
+                    if(idTimedOut) clearTimeout(idTimedOut)
+                  idTimedOut = setTimeout(() => {
+                    
+                    if(this.$store.getters['search/flagTimed'] || !ctx.currentTextName) {
+                      this.$store.dispatch('search/setFlagTimed',false)
+                      clearTimeout(idTimedOut)
+                      return;  
+                    }                     
+                    this.$store.dispatch('setError',{
+                                                    error: true,
+                                                    textError: 'Timed out, try to enter data differently'
+                                                  })
+                      this.$store.dispatch('setLoading',false)
+                      setTimeout(() => {
+                          this.$store.dispatch('setError',{
+                          error: false,
+                        
+                        })
+                        },3000)    
+                   },7000)
+                }
+                else{
+                  console.log('asdsad')
+                   this.$store.dispatch('setLoading',false)
+                       this.$store.dispatch('setError',{
+                                                    error: true,
+                                                    textError: 'Input format error'
+                                                  })
+                        setTimeout(() => {
+                          this.$store.dispatch('setError',{
+                          error: false,
+                        
+                        })
+                        },3000)
+                        }
+                
+               }
+               else{
+                 this.$store.commit('search/setLibs',{})
+               }
              
            },1000)
          
@@ -108,18 +152,28 @@ let idTimer = null;
         return this.$store.getters.color
       },
       
+      
 
     },
     watch:{
       $route:(to,from) => {
        ctx.name = to.name
        if(from.name == 'search')
-          console.log(from.name);
-          if(ctx.currentTextName){
+          
+          if(ctx.currentTextName && /^[a-zA-Z0-9\-\_\.]+/.test(ctx.currentTextName)){
             ctx.$store.dispatch('setCurrentName',ctx.currentTextName)
+           
           }
           
       },
+      currentTextName(v){
+         if(!(/^[a-zA-Z0-9\-\_\.]+/.test(ctx.currentTextName))){
+                    this.$store.dispatch('setLoading',false)
+                   
+                   
+                }
+      },
+    
      
 
     },

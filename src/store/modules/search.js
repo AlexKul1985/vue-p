@@ -16,7 +16,7 @@ function isLibraryAdd(localDB,dataServer){
 export const search = {
     namespaced: true,
     state:{
-      
+        flagTimed:false,
         libs:{},
        
     },
@@ -24,6 +24,9 @@ export const search = {
        
         libs(state){
             return state.libs
+        },
+        flagTimed(state){
+            return state.flagTimed
         }
 
     },
@@ -31,6 +34,10 @@ export const search = {
       
         setLibs(state,payload){
             state.libs = payload
+           
+        },
+        setFlagTimed(state,payload){
+            state.flagTimed = payload
            
         }
     },
@@ -42,6 +49,10 @@ export const search = {
         // debugger;
             let res_names = await fetch(`https://api.cdnjs.com/libraries/?search=${payload}`)
             let data_names = await res_names.json()
+            if(data_names.total !== 0){
+                
+                commit('setFlagTimed',true)
+            }
           
             
             let names = data_names.results.map((obj) => {
@@ -62,15 +73,20 @@ export const search = {
                 libs[name]['latest_version'] = latest_version
                 if(ind == names.length - 1){
                     isLibraryAdd(localStorage.getItem('libs'),libs)
-                    console.log(libs)
+                   
                     commit('setLibs',libs)
+                    
                 }
             });
             return true;
            
              
+        },
+        setFlagTimed({commit},payload){
+            
+            commit('setFlagTimed',payload)
+            
         }
-           
 
                
                
